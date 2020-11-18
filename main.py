@@ -2,7 +2,7 @@ import os
 import time
 import timeit
 import yaml
-import MySQLdb
+import MySQLdb as msd
 import logging
 import datetime
 
@@ -12,8 +12,8 @@ logging.basicConfig(level=config["app"]["log_level"])
 log = logging.getLogger(__name__)
 
 
-def get_db_con(db_type: str) -> MySQLdb.connect:
-    con = MySQLdb.connect(
+def get_db_con(db_type: str) -> msd.connect:
+    con = msd.connect(
         host=config[db_type]["host"],
         user=config[db_type]["user"],
         passwd=config[db_type]["password"],
