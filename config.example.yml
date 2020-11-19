@@ -2,6 +2,7 @@ app:
   loop_sleep: 30
   log_level: WARNING
   bbox: 13.930664,48.879167,24.301758,54.933454  # http://bboxfinder.com
+  skip_rdm_exp: true
 
 rdm_database:
   host: 127.0.0.1
