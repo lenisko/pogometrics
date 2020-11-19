@@ -48,7 +48,7 @@ def save_sql_data(data: dict) -> None:
     con.close()
 
     execution_end = timeit.default_timer()
-    log.debug(f"execution of save_sql_data took {stop - start} sec")
+    log.debug(f"execution of save_sql_data took {execution_end - execution_start} sec")
 
 
 def dt_now() -> str:
@@ -273,7 +273,7 @@ def fetch_sql_data(bbox: list) -> dict:
     con.close()
 
     execution_end = timeit.default_timer()
-    log.debug(f"execution of save_sql_data took {stop - start} sec")
+    log.debug(f"execution of save_sql_data took {execution_end - execution_start} sec")
 
     return output
 
