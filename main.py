@@ -310,7 +310,7 @@ def fetch_sql_data(bbox: list) -> dict:
             FROM
                 accounts
             WHERE
-                updated > {int(time.time() - 300)}
+                device_id is not NULL
         """)
 
         for row in cur.fetchall():
