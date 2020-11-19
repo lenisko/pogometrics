@@ -70,27 +70,28 @@ def fetch_sql_data(bbox: list) -> dict:
     cur = con.cursor()
 
     # account
-    cur.execute("""
-        SELECT
-            A.username,
-            A.total_exp,
-            A.level
-        FROM
-            account A INNER JOIN device D ON A.username = D.account_username
-        WHERE
-            A.total_exp is not NULL AND
-            D.instance_name = 'level_instance'
-        ORDER BY
-            A.username ASC
-    """)
+    if not skip_rdm_account:
+        cur.execute("""
+            SELECT
+                A.username,
+                A.total_exp,
+                A.level
+            FROM
+                account A INNER JOIN device D ON A.username = D.account_username
+            WHERE
+                A.total_exp is not NULL AND
+                D.instance_name = 'level_instance'
+            ORDER BY
+                A.username ASC
+        """)
 
-    for row in cur.fetchall():
-        output["account"].append({
-            "ts": dt_now(),
-            "username": row[0],
-            "total_exp": row[1],
-            "level": row[2],
-        })
+        for row in cur.fetchall():
+            output["account"].append({
+                "ts": dt_now(),
+                "username": row[0],
+                "total_exp": row[1],
+                "level": row[2],
+            })
 
     # pokemon_all
     cur.execute("""
