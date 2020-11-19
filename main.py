@@ -70,7 +70,7 @@ def fetch_sql_data(bbox: list) -> dict:
     cur = con.cursor()
 
     # account
-    if not skip_rdm_account:
+    if not config["app"]["skip_rdm_account"]:
         cur.execute("""
             SELECT
                 A.username,
