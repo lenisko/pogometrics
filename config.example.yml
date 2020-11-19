@@ -3,6 +3,14 @@ app:
   log_level: WARNING
   bbox: 13.930664,48.879167,24.301758,54.933454  # http://bboxfinder.com
   skip_rdm_account: true  # to enable it this PR is needed https://github.com/RealDeviceMap/RealDeviceMap/pull/182
+  skip_lorg_account: true
+
+metrics_database:
+  host: 127.0.0.1
+  user: metrics_user
+  password: supersecretpassword
+  name: metrics
+  connect_timeout: 5
 
 rdm_database:
   host: 127.0.0.1
@@ -11,9 +19,10 @@ rdm_database:
   name: rdm
   connect_timeout: 5
 
-metrics_database:
+# Used when `skip_lorg_account` is set to `false`. Only mysql support for now.
+lorg_database:
   host: 127.0.0.1
-  user: metrics_user
+  user: lorg_select_only_user
   password: supersecretpassword
-  name: metrics
+  name: lorgnette_db
   connect_timeout: 5

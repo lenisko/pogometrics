@@ -93,6 +93,8 @@ def fetch_sql_data(bbox: list) -> dict:
                 "level": row[2],
             })
 
+        log.debug("Fetched rdm account data")
+
     # pokemon_all
     cur.execute("""
         SELECT
@@ -111,6 +113,8 @@ def fetch_sql_data(bbox: list) -> dict:
             "name": "pokemon_all",
             "counter": row[0],
         })
+
+    log.debug("Fetched pokemon_all data")
 
     # pokemon_iv
     cur.execute("""
@@ -132,6 +136,8 @@ def fetch_sql_data(bbox: list) -> dict:
             "counter": row[0],
         })
 
+    log.debug("Fetched pokemon_iv data")
+
     # pokestop_quest
     cur.execute("""
         SELECT
@@ -151,6 +157,8 @@ def fetch_sql_data(bbox: list) -> dict:
             "counter": row[0],
         })
 
+    log.debug("Fetched pokestop_quest data")
+
     # pokestop_rocket
     cur.execute("""
         SELECT
@@ -169,6 +177,8 @@ def fetch_sql_data(bbox: list) -> dict:
             "name": "pokestop_rocket",
             "counter": row[0],
         })
+
+    log.debug("Fetched pokestop_rocket data")
 
     # raid
     cur.execute("""
@@ -200,6 +210,8 @@ def fetch_sql_data(bbox: list) -> dict:
             "level6": row[6] or 0,
         })
 
+    log.debug("Fetched raid data")
+
     # banned_all
     cur.execute("SELECT count(*) FROM `account` WHERE banned")
 
@@ -209,6 +221,8 @@ def fetch_sql_data(bbox: list) -> dict:
             "name": "acc_banned_all",
             "counter": row[0],
         })
+
+    log.debug("Fetched banned_all data")
 
     # banned_30
     cur.execute("SELECT count(*) FROM `account` WHERE level >= 30 and banned")
@@ -220,6 +234,8 @@ def fetch_sql_data(bbox: list) -> dict:
             "counter": row[0],
         })
 
+    log.debug("Fetched banned_30 data")
+
     # acc_banned_{type}
     cur.execute("SELECT banned, count(*) FROM `account` group by banned")
 
@@ -229,6 +245,8 @@ def fetch_sql_data(bbox: list) -> dict:
             "name": f"acc_banned_{row[0]}".lower(),
             "counter": row[1],
         })
+
+    log.debug("Fetched acc_banned_X data")
 
     # acc_in_use
     cur.execute("SELECT count(account_username) FROM `device` where account_username is not NULL")
@@ -240,6 +258,8 @@ def fetch_sql_data(bbox: list) -> dict:
             "counter": row[0],
         })
 
+    log.debug("Fetched acc_in_use data")
+
     # acc_clean_30
     cur.execute("SELECT count(*) FROM `account` WHERE level >= 30 and not banned")
 
@@ -249,6 +269,8 @@ def fetch_sql_data(bbox: list) -> dict:
             "name": "acc_clean_30",
             "counter": row[0],
         })
+
+    log.debug("Fetched acc_clean_30 data")
 
     # acc_failed_{type}
     cur.execute("SELECT failed, count(*) FROM `account` group by failed")
@@ -260,6 +282,8 @@ def fetch_sql_data(bbox: list) -> dict:
             "counter": row[1],
         })
 
+    log.debug("Fetched acc_failed_X data")
+
     # acc_warn_{type}
     cur.execute("SELECT warn, count(*) FROM `account` group by warn")
 
@@ -270,7 +294,35 @@ def fetch_sql_data(bbox: list) -> dict:
             "counter": row[1],
         })
 
+    log.debug("Fetched acc_warn_X data")
+
     con.close()
+
+    if not config["app"]["skip_lorg_account"]:
+        con = get_db_con("lorg_database")
+        cur = con.cursor()
+
+        cur.execute(f"""
+            SELECT
+                username,
+                total_exp,
+                level
+            FROM
+                accounts
+            WHERE
+                updated > {int(time.time() - 300)}
+        """)
+
+        for row in cur.fetchall():
+            output["account"].append({
+                "ts": dt_now(),
+                "username": row[0],
+                "total_exp": row[1],
+                "level": row[2],
+            })
+
+        log.debug("Fetched lorg_account data")
+        con.close()
 
     execution_end = timeit.default_timer()
     log.debug(f"execution of save_sql_data took {execution_end - execution_start} sec")
