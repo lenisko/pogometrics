@@ -5,7 +5,7 @@
 - Python 3.8 +,  virtualenv
 - Packages from `requirements.txt`
 - Bbox for queries limiting ( use http://bboxfinder.com )
-- Database and initial tables from `migrations/0.sql`
+- Database and initial tables from `migrations/*.sql`
 
 ## Getting Started
 
@@ -19,7 +19,7 @@
 
 ## TODO
 
-* Better errors handling
+* Better error handling
 * Take over the world
 * More metrics
 
