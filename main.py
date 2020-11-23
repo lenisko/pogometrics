@@ -88,6 +88,7 @@ def fetch_sql_data(bbox: list) -> dict:
         for row in cur.fetchall():
             output["account"].append({
                 "ts": dt_now(),
+                "source": 0,
                 "username": row[0],
                 "total_exp": row[1],
                 "level": row[2],
@@ -316,6 +317,7 @@ def fetch_sql_data(bbox: list) -> dict:
         for row in cur.fetchall():
             output["account"].append({
                 "ts": dt_now(),
+                "source": 1,
                 "username": row[0],
                 "total_exp": row[1],
                 "level": row[2],
