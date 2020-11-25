@@ -2,25 +2,56 @@ app:
   loop_sleep: 30
   log_level: WARNING
   bbox: 13.930664,48.879167,24.301758,54.933454  # http://bboxfinder.com
-  skip_rdm_account: true  # to enable it this PR is needed https://github.com/RealDeviceMap/RealDeviceMap/pull/182
-  skip_lorg_account: true
 
-metrics_database:
+# to enable metrics collection set desired keys to `false`
+# by default all metrics are disabled !
+skip:
+  lorg_account: true
+  rdm_account: true  # RDM PR is needed https://github.com/RealDeviceMap/RealDeviceMap/pull/182
+  rdm_raid: true
+  rdm_pokemon_all: true
+  rdm_pokemon_iv: true
+  rdm_pokestop_quest: true
+  rdm_pokestop_rocket: true
+  rdm_banned_all: true
+  rdm_banned_30: true
+  rdm_banned_type: true
+  rdm_acc_in_use: true
+  rdm_acc_clean_30: true
+  rdm_acc_failed_type: true
+  rdm_warn_type: true
+
+metrics_db:
+  type: mysql
   host: 127.0.0.1
   user: metrics_user
   password: supersecretpassword
   name: metrics
   connect_timeout: 5
 
-rdm_database:
+rdm_db:
+  enabled: false
+  type: mysql
   host: 127.0.0.1
   user: rdm_select_only_user
   password: supersecretpassword
   name: rdm
   connect_timeout: 5
 
-# Used when `skip_lorg_account` is set to `false`. Only mysql support for now.
-lorg_database:
+# no queries so far
+mad_db:
+  enabled: false
+  type: mysql
+  host: 127.0.0.1
+  user: mad_select_only_user
+  password: supersecretpassword
+  name: mad
+  connect_timeout: 5
+
+# only mysql support for now
+lorg_db:
+  enabled: false
+  type: mysql
   host: 127.0.0.1
   user: lorg_select_only_user
   password: supersecretpassword
